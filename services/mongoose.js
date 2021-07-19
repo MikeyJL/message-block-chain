@@ -8,6 +8,7 @@
 
 require('dotenv').config()
 const mongoose = require('mongoose')
+let attempted = 0
 
 const connectWithRetry = () => {
   console.log('\nConnecting...')
@@ -16,7 +17,12 @@ const connectWithRetry = () => {
   }).catch((error) => {
     console.log(error)
     console.log('\nFailed. Retrying...')
-    setTimeout(connectWithRetry(), 5000)
+    attempted++
+    if (attempted < 5) {
+      setTimeout(connectWithRetry(), 5000)
+    } else {
+      console.log('Failed. Please check that your MongoDB URL is correct.')
+    }
   })
 }
 

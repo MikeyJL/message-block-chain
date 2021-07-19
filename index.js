@@ -14,7 +14,9 @@ const UsersRoutes = require('./routes/users.routes')
 
 const app = express()
 
-app.use(bodyParser.urlencoded())
+app.use(bodyParser.urlencoded({
+  extended: true
+}))
 UsersRoutes.routesConfig(app)
 
 app.listen(process.env.PORT, () => {
