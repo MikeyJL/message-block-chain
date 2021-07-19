@@ -7,15 +7,18 @@
  */
 
 const mongoose = require('../services/mongoose').mongoose
-const Schema = mongoose.Schema
 
+// --------------
+// Set-up
+// --------------
+
+const Schema = mongoose.Schema
 const userSchema = new Schema({
   firstName: String,
   lastName: String,
   email: String,
   password: String
 })
-
 const User = mongoose.model('Users', userSchema)
 
 // --------------
@@ -34,4 +37,13 @@ const User = mongoose.model('Users', userSchema)
 exports.createUser = (userData) => {
   const user = new User(userData)
   return user.save()
+}
+
+/**
+ * Find a user based on the email provided.
+ * @param {string} email - The email to search against the database.
+ * @returns The user object as a Query instance.
+ */
+exports.findByEmail = (email) => {
+  return User.find({ email })
 }

@@ -9,6 +9,15 @@
 const UserModel = require('../models/user.model')
 const crypto = require('crypto')
 
+// --------------
+// Exports
+// --------------
+
+/**
+ * Directs the user model to create a new user.
+ * @param {object} req - The request.
+ * @param {object} res - The response.
+ */
 exports.createUser = (req, res) => {
   const salt = crypto.randomBytes(16).toString('base64')
   const hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64')

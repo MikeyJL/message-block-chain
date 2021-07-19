@@ -1,5 +1,5 @@
 /**
- * @file API routes for users.
+ * @file User API routes for users.
  * @author Mikey Lau
  * {@link https//mikeylau.uk|Portfolio}
  * {@link https://github.com/MikeyJL|Github}

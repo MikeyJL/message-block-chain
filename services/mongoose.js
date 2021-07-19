@@ -10,6 +10,9 @@ require('dotenv').config()
 const mongoose = require('mongoose')
 let attempted = 0
 
+/**
+ * Connects to MongoDB with 5 retries.
+ */
 const connectWithRetry = () => {
   console.log('\nConnecting...')
   mongoose.connect(process.env.MONGO_URL).then(() => {
