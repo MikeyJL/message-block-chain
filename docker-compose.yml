@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+    web:
+        build: .
+        image: mikeylau/message-block-chain
+        ports:
+            - "8080:8080"
