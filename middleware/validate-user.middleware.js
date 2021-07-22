@@ -56,15 +56,15 @@ exports.validateJWT = (req, res, next) => {
     try {
       const authorization = req.headers.authorization.split(' ')
       if (authorization[0] !== 'Bearer') {
-        return res.status(401).send({ error: 'Something went wrong' })
+        return res.status(401).send({ error: 'Missing authentication header' })
       } else {
         req.jwt = jwt.verify(authorization[1], process.env.JWT_SECRET)
         return next()
       }
-    } catch (error) {
-      res.status(403).send({ error })
+    } catch {
+      res.status(403).send({ error: 'Unauthorised access' })
     }
   } else {
-    res.status(401).send({ error: 'Something went wrong' })
+    res.status(401).send({ error: 'Missing authentication header' })
   }
 }

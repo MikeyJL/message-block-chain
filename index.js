@@ -10,6 +10,7 @@ require('dotenv').config()
 const bodyParser = require('body-parser')
 const express = require('express')
 const UsersRoutes = require('./routes/users.route')
+const NodesRoutes = require('./routes/nodes.route')
 const AuthorizationRoutes = require('./routes/auth.route')
 
 // --------------
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 // Routes
 // --------------
 UsersRoutes.routesConfig(app)
+NodesRoutes.routesConfig(app)
 AuthorizationRoutes.routesConfig(app)
 
 app.listen(process.env.PORT, () => {

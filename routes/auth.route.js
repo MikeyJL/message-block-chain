@@ -11,13 +11,13 @@ const ValidationMiddleware = require('../middleware/validate-user.middleware')
 const AuthorizationController = require('../controllers/auth.controller')
 
 exports.routesConfig = (app) => {
-  app.post('/auth', [
+  app.post('/v1/auth', [
     VerifyUserMiddleware.checkAuthFields,
     VerifyUserMiddleware.isPasswordCorrect,
     AuthorizationController.login
   ])
 
-  app.post('/auth/refresh', [
+  app.post('/v1/auth/refresh', [
     ValidationMiddleware.validateJWT,
     ValidationMiddleware.verifyRefreshData,
     ValidationMiddleware.validateRefreshToken,
