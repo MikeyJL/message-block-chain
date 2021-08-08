@@ -6,7 +6,7 @@
  * @version 1.0
  */
 
-const UserModel = require('../models/user.model')
+const db = require('../services/db')
 const crypto = require('crypto')
 
 /**
@@ -27,7 +27,6 @@ exports.checkAuthFields = (req, res, next) => {
     }
 
     if (!errors) {
-      console.log('OK')
       return res.status(400).send({ errors })
     } else {
       return next()
@@ -44,23 +43,24 @@ exports.checkAuthFields = (req, res, next) => {
  * @param {function} next - Next function.
  */
 exports.isPasswordCorrect = (req, res, next) => {
-  UserModel.findByEmail(req.body.email).then((user) => {
-    if (!user[0]) {
-      res.status(404).send({ errors: 'Something went wrong' })
+  const sql = `SELECT * FROM users WHERE email = '${req.body.email}'`
+  db.all(sql, (err, result) => {
+    if (err) {
+      res.status(404).send('Something went wrong')
     } else {
-      const passwordData = user[0].password.split('$')
+      const passwordData = result[0].password.split('$')
       const salt = passwordData[0]
       const hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64')
       if (hash === passwordData[1]) {
         req.body = {
-          userId: user[0]._id,
-          email: user[0].email,
-          firstName: user[0].firstName,
-          lastName: user[0].lastName
+          id: result[0].id,
+          email: result[0].email,
+          firstName: result[0].firstName,
+          lastName: result[0].lastName
         }
         return next()
       } else {
-        return res.status(400).send({ error: 'Invalid email or password' })
+        res.status(400).send('Invalid password')
       }
     }
   })

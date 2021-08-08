@@ -46,7 +46,7 @@ exports.validateRefreshToken = (req, res, next) => {
 }
 
 /**
- * Checks and process the authorization header. Also checkes if the access token is correct before permitting use of the API.
+ * Checks and process the authorization header. Also checks if the access token is correct before permitting use of the API.
  * @param {object} req - The request.
  * @param {object} res - The response.
  * @param {function} next - Next function.
