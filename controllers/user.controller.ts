@@ -6,8 +6,10 @@
  * @version 1.0
  */
 
-const db = require('../services/db')
-const crypto = require('crypto')
+import crypto from 'crypto'
+import db from '../services/db'
+import { Request, Response } from 'express'
+import { SQLiteError, User } from '../types'
 
 // --------------
 // Exports
@@ -23,13 +25,13 @@ const crypto = require('crypto')
  * @param {string} req.password - The user's password.
  * @returns The new user's id.
  */
-exports.createUser = (req, res) => {
+function createUser (req: Request, res: Response): Response | void {
   const salt = crypto.randomBytes(16).toString('base64')
   const hash = crypto.createHmac('sha512', salt).update(req.body.password).digest('base64')
   req.body.password = `${salt}$${hash}`
   const sql = 'INSERT INTO users (firstName, lastName, email, password) VALUES (?, ?, ?, ?)'
   const params = [req.body.firstName, req.body.lastName, req.body.email, req.body.password]
-  db.run(sql, params, (err) => {
+  db.run(sql, params, (err: SQLiteError) => {
     if (err) {
       switch (err.errno) {
         case 19:
@@ -45,10 +47,10 @@ exports.createUser = (req, res) => {
   })
 }
 
-exports.findByEmail = (req, res) => {
+function findByEmail (req: Request, res: Response): Response | void {
   const sql = 'SELECT * FROM users WHERE email = ?'
   const params = [req.params.email]
-  db.all(sql, params, (err, result) => {
+  db.all(sql, params, (err: Error, result: Array<User>) => {
     if (err) {
       res.status(400).send('Something went wrong')
     } else {
@@ -57,18 +59,24 @@ exports.findByEmail = (req, res) => {
   })
 }
 
-exports.updateDetails = (req, res) => {
+function updateDetails (req: Request, res: Response): Response | void {
   const sql = 'UPDATE users SET firstName = ?, lastName = ? WHERE email = ?'
   const params = [
     req.body.firstName,
     req.body.lastName,
     req.params.email
   ]
-  db.run(sql, params, (err) => {
+  db.run(sql, params, (err: Error) => {
     if (err) {
       res.status(400).send('Something went wrong')
     } else {
       res.status(200).send('Done')
     }
   })
+}
+
+export default {
+  createUser,
+  findByEmail,
+  updateDetails
 }

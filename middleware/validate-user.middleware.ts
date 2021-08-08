@@ -6,9 +6,10 @@
  * @version 1.0
  */
 
-require('dotenv').config()
+import crypto from 'crypto'
+import { NextFunction, Request, Response } from 'express'
 const jwt = require('jsonwebtoken')
-const crypto = require('crypto')
+require('dotenv').config()
 
 // --------------
 // Exports
@@ -20,7 +21,7 @@ const crypto = require('crypto')
  * @param {object} res - The response.
  * @param {function} next - Next function.
  */
-exports.verifyRefreshData = (req, res, next) => {
+function verifyRefreshData (req: Request, res: Response, next: NextFunction): Response | void {
   if (req.body && req.body.refreshToken) {
     return next()
   } else {
@@ -34,11 +35,10 @@ exports.verifyRefreshData = (req, res, next) => {
  * @param {object} res - The response.
  * @param {function} next - Next function.
  */
-exports.validateRefreshToken = (req, res, next) => {
+function validateRefreshToken (req: Request, res: Response, next: NextFunction): Response | void {
   const refreshToken = Buffer.from(req.body.refreshToken, 'base64')
-  const hash = crypto.createHmac('sha512', req.jwt.refreshKey).update(req.jwt.userId + process.env.JWT_SECRET).digest('base64')
-  if (hash === refreshToken) {
-    req.body = req.jwt
+  const hash = crypto.createHmac('sha512', req.body.jwt.refreshKey).update(req.body.jwt.userId + process.env.JWT_SECRET).digest('base64')
+  if (Buffer.from(hash) === refreshToken) {
     return next()
   } else {
     return res.status(400).send({ error: 'Invalid refresh token' })
@@ -51,14 +51,14 @@ exports.validateRefreshToken = (req, res, next) => {
  * @param {object} res - The response.
  * @param {function} next - Next function.
  */
-exports.validateJWT = (req, res, next) => {
+function validateJWT (req: Request, res: Response, next: NextFunction): Response | void {
   if (req.headers.authorization) {
     try {
       const authorization = req.headers.authorization.split(' ')
       if (authorization[0] !== 'Bearer') {
         return res.status(401).send({ error: 'Missing authentication header' })
       } else {
-        req.jwt = jwt.verify(authorization[1], process.env.JWT_SECRET)
+        req.body.jwt = jwt.verify(authorization[1], process.env.JWT_SECRET)
         return next()
       }
     } catch {
@@ -67,4 +67,10 @@ exports.validateJWT = (req, res, next) => {
   } else {
     res.status(401).send({ error: 'Missing authentication header' })
   }
+}
+
+export default {
+  verifyRefreshData,
+  validateRefreshToken,
+  validateJWT
 }

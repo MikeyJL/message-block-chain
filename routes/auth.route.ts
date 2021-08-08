@@ -6,11 +6,12 @@
  * @version 1.0
  */
 
-const VerifyUserMiddleware = require('../middleware/verify-user.middleware')
-const ValidationMiddleware = require('../middleware/validate-user.middleware')
-const AuthorizationController = require('../controllers/auth.controller')
+import VerifyUserMiddleware from '../middleware/verify-user.middleware'
+import ValidationMiddleware from '../middleware/validate-user.middleware'
+import AuthorizationController from '../controllers/auth.controller'
+import { Application } from 'express'
 
-exports.routesConfig = (app) => {
+function routesConfig (app: Application) {
   app.post('/v1/auth', [
     VerifyUserMiddleware.checkAuthFields,
     VerifyUserMiddleware.isPasswordCorrect,
@@ -23,4 +24,8 @@ exports.routesConfig = (app) => {
     ValidationMiddleware.validateRefreshToken,
     AuthorizationController.login
   ])
+}
+
+export default {
+  routesConfig
 }

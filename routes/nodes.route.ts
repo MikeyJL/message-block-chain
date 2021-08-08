@@ -6,10 +6,11 @@
  * @version 1.0
  */
 
-const ValidationMiddleware = require('../middleware/validate-user.middleware')
-const NodeController = require('../controllers/node.controller')
+import ValidationMiddleware from '../middleware/validate-user.middleware'
+import NodeController from '../controllers/node.controller'
+import { Application } from 'express'
 
-exports.routesConfig = (app) => {
+function routesConfig (app: Application) {
   app.post('/v1/nodes/init', [
     ValidationMiddleware.validateJWT,
     NodeController.initGenesis
@@ -18,4 +19,8 @@ exports.routesConfig = (app) => {
     ValidationMiddleware.validateJWT,
     NodeController.createNode
   ])
+}
+
+export default {
+  routesConfig
 }

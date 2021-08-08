@@ -6,10 +6,11 @@
  * @version 1.0
  */
 
-const ValidationMiddleware = require('../middleware/validate-user.middleware')
-const UserController = require('../controllers/user.controller')
+import ValidationMiddleware from '../middleware/validate-user.middleware'
+import UserController from '../controllers/user.controller'
+import { Application } from 'express'
 
-exports.routesConfig = (app) => {
+function routesConfig (app: Application) {
   app.post('/v1/users', [UserController.createUser])
   app.get('/v1/users/:email', [
     ValidationMiddleware.validateJWT,
@@ -19,4 +20,8 @@ exports.routesConfig = (app) => {
     ValidationMiddleware.validateJWT,
     UserController.updateDetails
   ])
+}
+
+export default {
+  routesConfig
 }

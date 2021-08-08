@@ -6,9 +6,10 @@
  * @version 1.0
  */
 
-require('dotenv').config()
+import crypto from 'crypto'
+import { Request, Response } from 'express'
 const jwt = require('jsonwebtoken')
-const crypto = require('crypto')
+require('dotenv').config()
 
 // --------------
 // Exports
@@ -19,7 +20,7 @@ const crypto = require('crypto')
  * @param {object} req - The request.
  * @param {object} res - The response.
  */
-exports.login = (req, res) => {
+function login (req: Request, res: Response): Response | void {
   try {
     const refreshId = req.body.userId + process.env.JWT_SECRET
     const salt = crypto.randomBytes(16).toString('base64')
@@ -41,12 +42,17 @@ exports.login = (req, res) => {
  * @param {object} req - The request.
  * @param {object} res - The response.
  */
-exports.refreshToken = (req, res) => {
+function refreshToken (req: Request, res: Response): Response | void {
   try {
-    req.body = req.jwt
+    req.body = req.body.jwt
     const token = jwt.sign(req.body, process.env.JWT_SECRET)
     res.status(201).send({ id: token })
   } catch (error) {
     res.status(500).send({ errors: error })
   }
+}
+
+export default {
+  login,
+  refreshToken
 }

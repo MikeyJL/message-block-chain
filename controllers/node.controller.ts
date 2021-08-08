@@ -6,17 +6,19 @@
  * @version 1.0
  */
 
-const db = require('../services/db')
-const crypto = require('crypto')
+import crypto from 'crypto'
+import db from '../services/db'
+import { Request, Response } from 'express'
+import { Node, SQLiteError } from '../types'
 
 // --------------
 // Exports
 // --------------
 
-exports.initGenesis = (req, res) => {
+function initGenesis (req: Request, res: Response): Response | void {
   const sql = 'INSERT INTO nodes (id, hash, previousHash, message, fromUser, toUser, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)'
   const params = [1, '0x00', '0x00', '0x00', '0x00', '0x00', '0x00']
-  db.run(sql, params, (err) => {
+  db.run(sql, params, (err: SQLiteError) => {
     if (err) {
       switch (err.errno) {
         case 19:
@@ -32,8 +34,8 @@ exports.initGenesis = (req, res) => {
   })
 }
 
-exports.createNode = async (req, res) => {
-  db.all('SELECT * FROM nodes ORDER BY ID DESC LIMIT 1', (err, result) => {
+function createNode (req: Request, res: Response): Response | void {
+  db.all('SELECT * FROM nodes ORDER BY ID DESC LIMIT 1', (err: SQLiteError, result: Array<Node>) => {
     if (err || result.length === 0) {
       res.status(400).send(err ?? 'Could not find previous node, if this is the first node, makes sure to init the genesis node.')
     } else {
@@ -49,7 +51,7 @@ exports.createNode = async (req, res) => {
         req.body.to,
         datetime
       ]
-      db.run(sql, params, (errCreate) => {
+      db.run(sql, params, (errCreate: SQLiteError) => {
         if (errCreate) {
           res.status(400).send(errCreate)
         } else {
@@ -58,4 +60,9 @@ exports.createNode = async (req, res) => {
       })
     }
   })
+}
+
+export default {
+  initGenesis,
+  createNode
 }

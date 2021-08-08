@@ -6,12 +6,13 @@
  * @version 1.0
  */
 
-require('dotenv').config()
+import UsersRoutes from './routes/users.route'
+import NodesRoutes from './routes/nodes.route'
+import AuthorizationRoutes from './routes/auth.route'
+import { NextFunction, Request, Response } from 'express'
 const bodyParser = require('body-parser')
 const express = require('express')
-const UsersRoutes = require('./routes/users.route')
-const NodesRoutes = require('./routes/nodes.route')
-const AuthorizationRoutes = require('./routes/auth.route')
+require('dotenv').config()
 
 // --------------
 // Set-up
@@ -26,7 +27,7 @@ app.use(bodyParser.urlencoded({
 // Headers
 // --------------
 
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Credentials', 'true')
   res.header('Access-Control-Allow-Methods', 'GET, HEAD, PUT, PATCH, POST, DELETE')
@@ -42,6 +43,7 @@ app.use((req, res, next) => {
 // --------------
 // Routes
 // --------------
+
 UsersRoutes.routesConfig(app)
 NodesRoutes.routesConfig(app)
 AuthorizationRoutes.routesConfig(app)

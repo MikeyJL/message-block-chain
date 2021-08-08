@@ -6,8 +6,10 @@
  * @version 1.0
  */
 
-const db = require('../services/db')
-const crypto = require('crypto')
+import crypto from 'crypto'
+import db from '../services/db'
+import { NextFunction, Request, Response } from 'express'
+import { User } from '../types'
 
 /**
  * Checks if the request body is missing any fields.
@@ -15,7 +17,7 @@ const crypto = require('crypto')
  * @param {object} res - The response.
  * @param {function} next - Next function.
  */
-exports.checkAuthFields = (req, res, next) => {
+function checkAuthFields (req: Request, res: Response, next: NextFunction): Response | void {
   const errors = []
 
   if (req.body) {
@@ -32,7 +34,7 @@ exports.checkAuthFields = (req, res, next) => {
       return next()
     }
   } else {
-    req.status(400).send({ error: 'Missing body' })
+    res.status(400).send({ error: 'Missing body' })
   }
 }
 
@@ -42,9 +44,9 @@ exports.checkAuthFields = (req, res, next) => {
  * @param {object} res - The response.
  * @param {function} next - Next function.
  */
-exports.isPasswordCorrect = (req, res, next) => {
+function isPasswordCorrect (req: Request, res: Response, next: NextFunction): Response | void {
   const sql = `SELECT * FROM users WHERE email = '${req.body.email}'`
-  db.all(sql, (err, result) => {
+  db.all(sql, (err: Error, result: Array<User>) => {
     if (err) {
       res.status(404).send('Something went wrong')
     } else {
@@ -64,4 +66,9 @@ exports.isPasswordCorrect = (req, res, next) => {
       }
     }
   })
+}
+
+export default {
+  checkAuthFields,
+  isPasswordCorrect
 }

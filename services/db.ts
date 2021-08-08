@@ -8,7 +8,7 @@
 
 const sqlite = require('sqlite3').verbose()
 
-const db = new sqlite.Database('services/db.sqlite', (err) => {
+const db = new sqlite.Database('db.sqlite', (err: Error) => {
   if (err) {
     console.log(`Error: ${err}`)
   } else {
@@ -23,7 +23,7 @@ const db = new sqlite.Database('services/db.sqlite', (err) => {
         password,
         CONSTRAINT email_unique UNIQUE (email))`
 
-    db.run(usersSql, (err) => {
+    db.run(usersSql, (err: Error) => {
       if (err) {
         console.log('USERS', err)
       }
@@ -39,7 +39,7 @@ const db = new sqlite.Database('services/db.sqlite', (err) => {
         toUser TEXT,
         createdAt TEXT)`
 
-    db.run(nodeSql, (err) => {
+    db.run(nodeSql, (err: Error) => {
       if (err) {
         console.log('NODES', err)
       }
@@ -47,4 +47,4 @@ const db = new sqlite.Database('services/db.sqlite', (err) => {
   }
 })
 
-module.exports = db
+export default db
