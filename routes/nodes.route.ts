@@ -23,6 +23,10 @@ function routesConfig (app: Application) {
     ValidationMiddleware.validateJWT,
     NodeController.createNode
   ])
+  app.get('/v1/nodes', [
+    ValidationMiddleware.validateJWT,
+    NodeController.getAllNodes
+  ])
 }
 
 export default {

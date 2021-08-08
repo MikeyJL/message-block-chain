@@ -25,6 +25,10 @@ function routesConfig(app) {
         validate_user_middleware_1.default.validateJWT,
         node_controller_1.default.createNode
     ]);
+    app.get('/v1/nodes', [
+        validate_user_middleware_1.default.validateJWT,
+        node_controller_1.default.getAllNodes
+    ]);
 }
 exports.default = {
     routesConfig
