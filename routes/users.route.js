@@ -15,7 +15,7 @@ exports.routesConfig = (app) => {
     ValidationMiddleware.validateJWT,
     UserController.findByEmail
   ])
-  app.put('/v1/users/:id', [
+  app.put('/v1/users/:email', [
     ValidationMiddleware.validateJWT,
     UserController.updateDetails
   ])

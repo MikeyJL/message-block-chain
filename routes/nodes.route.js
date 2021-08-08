@@ -10,8 +10,12 @@ const ValidationMiddleware = require('../middleware/validate-user.middleware')
 const NodeController = require('../controllers/node.controller')
 
 exports.routesConfig = (app) => {
-  app.post('/v1/init', [
+  app.post('/v1/nodes/init', [
     ValidationMiddleware.validateJWT,
-    NodeController.init
+    NodeController.initGenesis
+  ])
+  app.post('/v1/nodes', [
+    ValidationMiddleware.validateJWT,
+    NodeController.createNode
   ])
 }

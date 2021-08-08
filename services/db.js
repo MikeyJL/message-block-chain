@@ -14,18 +14,34 @@ const db = new sqlite.Database('services/db.sqlite', (err) => {
   } else {
     console.log('Connected')
 
-    const sql = `
+    const usersSql = `
       CREATE TABLE IF NOT EXISTS users (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      firstName TEXT,
-      lastName TEXT,
-      email TEXT UNIQUE,
-      password,
-      CONSTRAINT email_unique UNIQUE (email))`
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        firstName TEXT,
+        lastName TEXT,
+        email TEXT UNIQUE,
+        password,
+        CONSTRAINT email_unique UNIQUE (email))`
 
-    db.run(sql, (err) => {
+    db.run(usersSql, (err) => {
       if (err) {
-        console.log('Table already exists')
+        console.log('USERS', err)
+      }
+    })
+
+    const nodeSql = `
+      CREATE TABLE IF NOT EXISTS nodes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        hash TEXT,
+        previousHash TEXT,
+        message TEXT,
+        fromUser TEXT,
+        toUser TEXT,
+        createdAt TEXT)`
+
+    db.run(nodeSql, (err) => {
+      if (err) {
+        console.log('NODES', err)
       }
     })
   }
