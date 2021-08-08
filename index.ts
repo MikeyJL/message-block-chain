@@ -23,10 +23,9 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-// --------------
-// Headers
-// --------------
-
+/**
+ * Inits the headers.
+ */
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Credentials', 'true')

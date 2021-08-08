@@ -10,6 +10,10 @@ import ValidationMiddleware from '../middleware/validate-user.middleware'
 import UserController from '../controllers/user.controller'
 import { Application } from 'express'
 
+/**
+ * Routes for user endpoints.
+ * @param {Application} app - The app instance.
+ */
 function routesConfig (app: Application) {
   app.post('/v1/users', [UserController.createUser])
   app.get('/v1/users/:email', [

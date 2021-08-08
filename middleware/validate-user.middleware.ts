@@ -11,15 +11,12 @@ import { NextFunction, Request, Response } from 'express'
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-// --------------
-// Exports
-// --------------
-
 /**
  * Checks if a refresh token is provided.
- * @param {object} req - The request.
- * @param {object} res - The response.
+ * @param {string} req.body.refreshToken - The refresh token.
+ * @param {Response} res - The response.
  * @param {function} next - Next function.
+ * @returns A response.
  */
 function verifyRefreshData (req: Request, res: Response, next: NextFunction): Response | void {
   if (req.body && req.body.refreshToken) {
@@ -31,9 +28,10 @@ function verifyRefreshData (req: Request, res: Response, next: NextFunction): Re
 
 /**
  * Checks if the refresh token is valid.
- * @param {object} req - The request.
- * @param {object} res - The response.
+ * @param {Request} req - The request.
+ * @param {Response} res - The response.
  * @param {function} next - Next function.
+ * @returns A response.
  */
 function validateRefreshToken (req: Request, res: Response, next: NextFunction): Response | void {
   const refreshToken = Buffer.from(req.body.refreshToken, 'base64')
@@ -47,9 +45,10 @@ function validateRefreshToken (req: Request, res: Response, next: NextFunction):
 
 /**
  * Checks and process the authorization header. Also checks if the access token is correct before permitting use of the API.
- * @param {object} req - The request.
- * @param {object} res - The response.
- * @param {function} next - Next function.
+ * @param {Request} req - The request.
+ * @param {Response} res - The response.
+ * @param {NextFunction} next - Next function.
+ * @returns A response.
  */
 function validateJWT (req: Request, res: Response, next: NextFunction): Response | void {
   if (req.headers.authorization) {

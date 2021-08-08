@@ -12,6 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const validate_user_middleware_1 = __importDefault(require("../middleware/validate-user.middleware"));
 const user_controller_1 = __importDefault(require("../controllers/user.controller"));
+/**
+ * Routes for user endpoints.
+ * @param {Application} app - The app instance.
+ */
 function routesConfig(app) {
     app.post('/v1/users', [user_controller_1.default.createUser]);
     app.get('/v1/users/:email', [

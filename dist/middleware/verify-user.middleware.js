@@ -14,9 +14,11 @@ const crypto_1 = __importDefault(require("crypto"));
 const db_1 = __importDefault(require("../services/db"));
 /**
  * Checks if the request body is missing any fields.
- * @param {object} req - The request.
- * @param {object} res - The response.
- * @param {function} next - Next function.
+ * @param {string} req.body.email - The email of the user.
+ * @param {string} req.body.password - The password of the user.
+ * @param {Response} res - The response.
+ * @param {NextFunction} next - Next function.
+ * @returns A response.
  */
 function checkAuthFields(req, res, next) {
     const errors = [];
@@ -40,9 +42,11 @@ function checkAuthFields(req, res, next) {
 }
 /**
  * Checks if the password given is correct and matches the hashed version stored on the database.
- * @param {object} req - The request.
- * @param {object} res - The response.
- * @param {function} next - Next function.
+ * @param {string} req.body.email - The email of the user.
+ * @param {string} req.body.password - The password of the user.
+ * @param {Response} res - The response.
+ * @param {NextFunction} next - Next function.
+ * @returns A response.
  */
 function isPasswordCorrect(req, res, next) {
     const sql = `SELECT * FROM users WHERE email = '${req.body.email}'`;

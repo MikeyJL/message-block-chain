@@ -13,13 +13,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_1 = __importDefault(require("crypto"));
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
-// --------------
-// Exports
-// --------------
 /**
  * Authenticates the user and sends the access and refresh tokens.
- * @param {object} req - The request.
- * @param {object} res - The response.
+ * @param {Request} req - The request.
+ * @param {Response} res - The response.
+ * @returns A response.
  */
 function login(req, res) {
     try {
@@ -40,8 +38,9 @@ function login(req, res) {
 }
 /**
  * Creates and sends the refresh token.
- * @param {object} req - The request.
- * @param {object} res - The response.
+ * @param {Request} req - The request.
+ * @param {Response} res - The response.
+ * @returns A response.
  */
 function refreshToken(req, res) {
     try {

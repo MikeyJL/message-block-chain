@@ -11,14 +11,11 @@ import { Request, Response } from 'express'
 const jwt = require('jsonwebtoken')
 require('dotenv').config()
 
-// --------------
-// Exports
-// --------------
-
 /**
  * Authenticates the user and sends the access and refresh tokens.
- * @param {object} req - The request.
- * @param {object} res - The response.
+ * @param {Request} req - The request.
+ * @param {Response} res - The response.
+ * @returns A response.
  */
 function login (req: Request, res: Response): Response | void {
   try {
@@ -39,8 +36,9 @@ function login (req: Request, res: Response): Response | void {
 
 /**
  * Creates and sends the refresh token.
- * @param {object} req - The request.
- * @param {object} res - The response.
+ * @param {Request} req - The request.
+ * @param {Response} res - The response.
+ * @returns A response.
  */
 function refreshToken (req: Request, res: Response): Response | void {
   try {

@@ -12,17 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_1 = __importDefault(require("crypto"));
 const db_1 = __importDefault(require("../services/db"));
-// --------------
-// Exports
-// --------------
 /**
  * Creates a new user.
- * @param {object} res - The response.
- * @param {object} req - The data required to create a new user.
- * @param {string} req.firstName - The user's first name.
- * @param {string} req.lastName - The user's last name.
- * @param {string} req.email - The user's email.
- * @param {string} req.password - The user's password.
+ * @param {string} req.body.firstName - The user's first name.
+ * @param {string} req.body.lastName - The user's last name.
+ * @param {string} req.body.email - The user's email.
+ * @param {string} req.body.password - The user's password.
+ * @param {Response} res - The response.
  * @returns The new user's id.
  */
 function createUser(req, res) {
@@ -47,6 +43,12 @@ function createUser(req, res) {
         }
     });
 }
+/**
+ * Finds a user by email.
+ * @param {string} req.body.email - The user's email.
+ * @param {Response} res - The response.
+ * @returns The new user's id.
+ */
 function findByEmail(req, res) {
     const sql = 'SELECT * FROM users WHERE email = ?';
     const params = [req.params.email];
@@ -59,6 +61,14 @@ function findByEmail(req, res) {
         }
     });
 }
+/**
+ * Updates a user's details by email.
+ * @param {string} req.body.firstName - The user's first name.
+ * @param {string} req.body.lastName - The user's last name.
+ * @param {string} req.body.email - The user's email.
+ * @param {Response} res - The response.
+ * @returns The new user's id.
+ */
 function updateDetails(req, res) {
     const sql = 'UPDATE users SET firstName = ?, lastName = ? WHERE email = ?';
     const params = [

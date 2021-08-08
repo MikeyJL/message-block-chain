@@ -12,6 +12,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const validate_user_middleware_1 = __importDefault(require("../middleware/validate-user.middleware"));
 const node_controller_1 = __importDefault(require("../controllers/node.controller"));
+/**
+ * Routes for node endpoints.
+ * @param {Application} app - The app instance.
+ */
 function routesConfig(app) {
     app.post('/v1/nodes/init', [
         validate_user_middleware_1.default.validateJWT,

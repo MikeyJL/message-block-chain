@@ -10,6 +10,10 @@ import ValidationMiddleware from '../middleware/validate-user.middleware'
 import NodeController from '../controllers/node.controller'
 import { Application } from 'express'
 
+/**
+ * Routes for node endpoints.
+ * @param {Application} app - The app instance.
+ */
 function routesConfig (app: Application) {
   app.post('/v1/nodes/init', [
     ValidationMiddleware.validateJWT,

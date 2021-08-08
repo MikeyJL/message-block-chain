@@ -11,18 +11,13 @@ import db from '../services/db'
 import { Request, Response } from 'express'
 import { SQLiteError, User } from '../types'
 
-// --------------
-// Exports
-// --------------
-
 /**
  * Creates a new user.
- * @param {object} res - The response.
- * @param {object} req - The data required to create a new user.
- * @param {string} req.firstName - The user's first name.
- * @param {string} req.lastName - The user's last name.
- * @param {string} req.email - The user's email.
- * @param {string} req.password - The user's password.
+ * @param {string} req.body.firstName - The user's first name.
+ * @param {string} req.body.lastName - The user's last name.
+ * @param {string} req.body.email - The user's email.
+ * @param {string} req.body.password - The user's password.
+ * @param {Response} res - The response.
  * @returns The new user's id.
  */
 function createUser (req: Request, res: Response): Response | void {
@@ -47,6 +42,12 @@ function createUser (req: Request, res: Response): Response | void {
   })
 }
 
+/**
+ * Finds a user by email.
+ * @param {string} req.body.email - The user's email.
+ * @param {Response} res - The response.
+ * @returns The new user's id.
+ */
 function findByEmail (req: Request, res: Response): Response | void {
   const sql = 'SELECT * FROM users WHERE email = ?'
   const params = [req.params.email]
@@ -59,6 +60,14 @@ function findByEmail (req: Request, res: Response): Response | void {
   })
 }
 
+/**
+ * Updates a user's details by email.
+ * @param {string} req.body.firstName - The user's first name.
+ * @param {string} req.body.lastName - The user's last name.
+ * @param {string} req.body.email - The user's email.
+ * @param {Response} res - The response.
+ * @returns The new user's id.
+ */
 function updateDetails (req: Request, res: Response): Response | void {
   const sql = 'UPDATE users SET firstName = ?, lastName = ? WHERE email = ?'
   const params = [

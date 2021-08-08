@@ -12,9 +12,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const crypto_1 = __importDefault(require("crypto"));
 const db_1 = __importDefault(require("../services/db"));
-// --------------
-// Exports
-// --------------
+/**
+ * Generates the genesis node of a new blockchain.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns A response.
+ */
 function initGenesis(req, res) {
     const sql = 'INSERT INTO nodes (id, hash, previousHash, message, fromUser, toUser, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)';
     const params = [1, '0x00', '0x00', '0x00', '0x00', '0x00', '0x00'];
@@ -34,6 +37,14 @@ function initGenesis(req, res) {
         }
     });
 }
+/**
+ * Creates a new node in the blockchain.
+ * @param {string} req.body.message - The message.
+ * @param {string} req.body.from - Who the message is from.
+ * @param {string} req.body.to - Who the message is intended for.
+ * @param {Response} res - The response object
+ * @returns A response.
+ */
 function createNode(req, res) {
     db_1.default.all('SELECT * FROM nodes ORDER BY ID DESC LIMIT 1', (err, result) => {
         if (err || result.length === 0) {
@@ -63,8 +74,26 @@ function createNode(req, res) {
         }
     });
 }
+/**
+ * Gets all the nodes in the database.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object
+ * @returns A response.
+ */
+function getAllNodes(req, res) {
+    const sql = 'SELECT * FROM nodes';
+    db_1.default.all(sql, (err, result) => {
+        if (err) {
+            res.status(400).send(err);
+        }
+        else {
+            res.status(200).send(result);
+        }
+    });
+}
 exports.default = {
     initGenesis,
-    createNode
+    createNode,
+    getAllNodes
 };
 //# sourceMappingURL=node.controller.js.map

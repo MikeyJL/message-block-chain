@@ -11,10 +11,12 @@ import db from '../services/db'
 import { Request, Response } from 'express'
 import { Node, SQLiteError } from '../types'
 
-// --------------
-// Exports
-// --------------
-
+/**
+ * Generates the genesis node of a new blockchain.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object.
+ * @returns A response.
+ */
 function initGenesis (req: Request, res: Response): Response | void {
   const sql = 'INSERT INTO nodes (id, hash, previousHash, message, fromUser, toUser, createdAt) VALUES (?, ?, ?, ?, ?, ?, ?)'
   const params = [1, '0x00', '0x00', '0x00', '0x00', '0x00', '0x00']
@@ -34,6 +36,14 @@ function initGenesis (req: Request, res: Response): Response | void {
   })
 }
 
+/**
+ * Creates a new node in the blockchain.
+ * @param {string} req.body.message - The message.
+ * @param {string} req.body.from - Who the message is from.
+ * @param {string} req.body.to - Who the message is intended for.
+ * @param {Response} res - The response object
+ * @returns A response.
+ */
 function createNode (req: Request, res: Response): Response | void {
   db.all('SELECT * FROM nodes ORDER BY ID DESC LIMIT 1', (err: SQLiteError, result: Array<Node>) => {
     if (err || result.length === 0) {
@@ -62,7 +72,25 @@ function createNode (req: Request, res: Response): Response | void {
   })
 }
 
+/**
+ * Gets all the nodes in the database.
+ * @param {Request} req - The request object.
+ * @param {Response} res - The response object
+ * @returns A response.
+ */
+function getAllNodes (req: Request, res: Response): Response | void {
+  const sql = 'SELECT * FROM nodes'
+  db.all(sql, (err: SQLiteError, result: Array<Node>) => {
+    if (err) {
+      res.status(400).send(err)
+    } else {
+      res.status(200).send(result)
+    }
+  })
+}
+
 export default {
   initGenesis,
-  createNode
+  createNode,
+  getAllNodes
 }

@@ -1,5 +1,5 @@
 /**
- * @file Auth API routes for users.
+ * @file Auth API routes for authentication.
  * @author Mikey Lau
  * {@link https//mikeylau.uk|Portfolio}
  * {@link https://github.com/MikeyJL|Github}
@@ -11,6 +11,10 @@ import ValidationMiddleware from '../middleware/validate-user.middleware'
 import AuthorizationController from '../controllers/auth.controller'
 import { Application } from 'express'
 
+/**
+ * Routes for auth endpoints.
+ * @param {Application} app - The app instance.
+ */
 function routesConfig (app: Application) {
   app.post('/v1/auth', [
     VerifyUserMiddleware.checkAuthFields,
